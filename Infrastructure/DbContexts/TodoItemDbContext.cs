@@ -19,6 +19,7 @@ public class TodoItemDbContext(DbContextOptions<TodoItemDbContext> options) : Db
             Title = "Sample Todo Item",
             Description = "This is a sample todo item.",
             IsCompleted = false,
+            PercentComplete = 0,
             CreatedAt = new DateTime(2023, 1, 1, 0, 0, 0, DateTimeKind.Utc),
             ExpiryDateTime = new DateTime(2023, 1, 8, 0, 0, 0, DateTimeKind.Utc)
         });
@@ -29,6 +30,7 @@ public class TodoItemDbContext(DbContextOptions<TodoItemDbContext> options) : Db
             Title = "Another Todo Item",
             Description = "This is another todo item.",
             IsCompleted = false,
+            PercentComplete = 50,
             CreatedAt = new DateTime(2023, 1, 1, 0, 0, 0, DateTimeKind.Utc),
             ExpiryDateTime = new DateTime(2023, 1, 15, 0, 0, 0, DateTimeKind.Utc)
         });
@@ -39,6 +41,7 @@ public class TodoItemDbContext(DbContextOptions<TodoItemDbContext> options) : Db
             Title = "Completed Todo Item",
             Description = "This todo item is completed.",
             IsCompleted = true,
+            PercentComplete = 100, 
             CreatedAt = new DateTime(2022, 12, 22, 0, 0, 0, DateTimeKind.Utc),
             ExpiryDateTime = new DateTime(2022, 12, 27, 0, 0, 0, DateTimeKind.Utc)
         });
