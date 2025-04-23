@@ -13,14 +13,14 @@ public class TodoItemDbContext(DbContextOptions<TodoItemDbContext> options) : Db
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
         // Seed
-        modelBuilder.Entity<TodoItem>().HasData(new TodoItem
+         modelBuilder.Entity<TodoItem>().HasData(new TodoItem
         {
             Id = 1,
             Title = "Sample Todo Item",
             Description = "This is a sample todo item.",
             IsCompleted = false,
-            CreatedAt = DateTime.UtcNow,
-            ExpiryDateTime = DateTime.UtcNow.AddDays(7)
+            CreatedAt = new DateTime(2023, 1, 1, 0, 0, 0, DateTimeKind.Utc),
+            ExpiryDateTime = new DateTime(2023, 1, 8, 0, 0, 0, DateTimeKind.Utc)
         });
 
         modelBuilder.Entity<TodoItem>().HasData(new TodoItem
@@ -29,8 +29,8 @@ public class TodoItemDbContext(DbContextOptions<TodoItemDbContext> options) : Db
             Title = "Another Todo Item",
             Description = "This is another todo item.",
             IsCompleted = false,
-            CreatedAt = DateTime.UtcNow,
-            ExpiryDateTime = DateTime.UtcNow.AddDays(14)
+            CreatedAt = new DateTime(2023, 1, 1, 0, 0, 0, DateTimeKind.Utc),
+            ExpiryDateTime = new DateTime(2023, 1, 15, 0, 0, 0, DateTimeKind.Utc)
         });
 
         modelBuilder.Entity<TodoItem>().HasData(new TodoItem
@@ -39,8 +39,8 @@ public class TodoItemDbContext(DbContextOptions<TodoItemDbContext> options) : Db
             Title = "Completed Todo Item",
             Description = "This todo item is completed.",
             IsCompleted = true,
-            CreatedAt = DateTime.UtcNow.AddDays(-10),
-            ExpiryDateTime = DateTime.UtcNow.AddDays(-5)
+            CreatedAt = new DateTime(2022, 12, 22, 0, 0, 0, DateTimeKind.Utc),
+            ExpiryDateTime = new DateTime(2022, 12, 27, 0, 0, 0, DateTimeKind.Utc)
         });
     }
 }
