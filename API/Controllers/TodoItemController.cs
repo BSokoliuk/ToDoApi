@@ -37,6 +37,27 @@ public class TodoItemController(
     return Ok(todoItems);
   }
 
+  [HttpGet("incoming/today")]
+  public async Task<IActionResult> GetIncomingToday()
+  {
+    var todoItems = await _todoItemService.GetIncomingTodayAsync();
+    return Ok(todoItems);
+  }
+
+  [HttpGet("incoming/nextday")]
+  public async Task<IActionResult> GetIncomingNextDay()
+  {
+    var todoItems = await _todoItemService.GetIncomingNextDayAsync();
+    return Ok(todoItems);
+  }
+
+  [HttpGet("incoming/week")]
+  public async Task<IActionResult> GetIncomingThisWeek()
+  {
+    var todoItems = await _todoItemService.GetIncomingThisWeekAsync();
+    return Ok(todoItems);
+  }
+
   [HttpPost]
   public async Task<IActionResult> Post([FromBody] TodoItemDto dto)
   {
@@ -68,6 +89,33 @@ public class TodoItemController(
       return BadRequest();
     }
     return Ok();
+  }
+
+  [HttpPut("{id:int}/percent-complete")]
+  public async Task<IActionResult> UpdatePercentComplete(int id, [FromBody] int percentComplete)
+  {
+    if (percentComplete < 0 || percentComplete > 100)
+    {
+      return BadRequest("Percent complete must be between 0 and 100.");
+    }
+
+    var result = await _todoItemService.UpdatePercentCompleteAsync(id, percentComplete);
+    if (!result)
+    {
+      return NotFound();
+    }
+    return NoContent();
+  }
+
+  [HttpPut("{id:int}/status")]
+  public async Task<IActionResult> UpdateStatus(int id, [FromBody] bool isCompleted)
+  {
+    var result = await _todoItemService.UpdateStatusAsync(id, isCompleted);
+    if (!result)
+    {
+      return NotFound();
+    }
+    return NoContent();
   }
 
   [HttpDelete("{id:int}")]

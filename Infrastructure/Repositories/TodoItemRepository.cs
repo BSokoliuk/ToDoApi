@@ -26,6 +26,13 @@ public class TodoItemRepository(TodoItemDbContext context) : ITodoItemRepository
       .ToListAsync();
   }
 
+  public async Task<IEnumerable<TodoItem>> GetIncomingItemsAsync(DateTime startDateTime, DateTime endDateTime)
+  {
+    return await _context.TodoItems
+      .Where(ti => ti.ExpiryDateTime > startDateTime && ti.ExpiryDateTime < endDateTime)
+      .ToListAsync();
+  }
+
   public async Task<TodoItem> AddAsync(TodoItem entity)
   {
     var result = await _context.TodoItems.AddAsync(entity);
