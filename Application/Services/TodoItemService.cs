@@ -30,6 +30,11 @@ public class TodoItemService(IUnitOfWork unitOfWork) : ITodoItemService
 
   public async Task<TodoItemDto> AddAsync(TodoItemDto model)
   {
+    // Ignore the Id from the client
+    model.Id = 0;
+
+    ValidateCompletionState(model);
+
     TodoItem todoItem = model.Adapt<TodoItem>();
     var result = await _unitOfWork.TodoItem.AddAsync(todoItem);
     await _unitOfWork.SaveChangesAsync();
@@ -44,6 +49,8 @@ public class TodoItemService(IUnitOfWork unitOfWork) : ITodoItemService
     var todoItem = await _unitOfWork.TodoItem.GetByIdAsync(id);
     if (todoItem is null)
       return false;
+
+    ValidateCompletionState(model);
 
     todoItem = model.Adapt<TodoItem>();
     
@@ -61,5 +68,17 @@ public class TodoItemService(IUnitOfWork unitOfWork) : ITodoItemService
     _unitOfWork.TodoItem.Delete(todoItem);
     await _unitOfWork.SaveChangesAsync();
     return true;
+  }
+
+  private static void ValidateCompletionState(TodoItemDto model)
+  {
+    if (model.IsCompleted && model.PercentComplete != 100)
+    {
+      model.PercentComplete = 100; // Automatically set PercentComplete to 100 if IsCompleted is true
+    }
+    else if (!model.IsCompleted && model.PercentComplete == 100)
+    {
+      throw new InvalidOperationException("PercentComplete cannot be 100 if IsCompleted is false.");
+    }
   }
 }
