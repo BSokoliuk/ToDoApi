@@ -36,7 +36,7 @@ public class TodoItemService(IUnitOfWork unitOfWork) : ITodoItemService
     return result.Adapt<TodoItemDto>();
   }
 
-  public async Task<bool> Update(int id, TodoItemDto model)
+  public async Task<bool> UpdateAsync(int id, TodoItemDto model)
   {
     if (model.Id != id)
       return false;
@@ -52,7 +52,7 @@ public class TodoItemService(IUnitOfWork unitOfWork) : ITodoItemService
     return true;
   }
 
-  public async Task<bool> Delete(int id)
+  public async Task<bool> DeleteAsync(int id)
   {
     var todoItem = await _unitOfWork.TodoItem.GetByIdAsync(id);
     if (todoItem is null)
