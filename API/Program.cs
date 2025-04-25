@@ -33,6 +33,8 @@ builder.Services.AddSwaggerGen(c =>
   });
 });
 
+builder.WebHost.UseUrls("http://*:80");
+
 WebApplication app = builder.Build();
 
 // Configure the HTTP request pipeline.

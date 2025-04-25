@@ -1,0 +1,48 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: backend
+    ports:
+      - '5000:80'
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    depends_on:
+      - db
+
+  db:
+    container_name: postgres
+    image: postgres:15
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: MyDatabase
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  migrations:
+    build:
+      context: .
+      dockerfile: Dockerfile.migrations
+    container_name: ef-migrator
+    depends_on:
+      - db
+    volumes:
+      - .:/app
+    working_dir: /app
+    entrypoint:
+      [
+        'dotnet',
+        'ef',
+        'database',
+        'update',
+        '--project',
+        'Infrastructure/Infrastructure.csproj',
+        '--startup-project',
+        'API/API.csproj',
+      ]
+
+volumes:
+  postgres_data:
