@@ -1,4 +1,5 @@
 using Application.DTOs;
+using Application.Enums;
 using Application.Services.Interfaces;
 using Application.UoW;
 using Domain.Entities;
@@ -68,14 +69,14 @@ public class TodoItemService(IUnitOfWork unitOfWork) : ITodoItemService
     return result.Adapt<TodoItemDto>();
   }
 
-  public async Task<bool> UpdateAsync(int id, TodoItemDto model)
+  public async Task<UpdateResult> UpdateAsync(int id, TodoItemDto model)
   {
     if (model.Id != id)
-      return false;
+      return UpdateResult.BadRequest;
 
     var todoItem = await _unitOfWork.TodoItem.GetByIdAsync(id);
     if (todoItem is null)
-      return false;
+      return UpdateResult.NotFound;
 
     ValidateCompletionState(model);
 
@@ -83,7 +84,7 @@ public class TodoItemService(IUnitOfWork unitOfWork) : ITodoItemService
     
     _unitOfWork.TodoItem.Update(todoItem);
     await _unitOfWork.SaveChangesAsync();
-    return true;
+    return UpdateResult.Success;
   }
 
   public async Task<bool> UpdatePercentCompleteAsync(int id, int percentComplete)

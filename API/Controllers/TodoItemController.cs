@@ -1,5 +1,6 @@
 
 using Application.DTOs;
+using Application.Enums;
 using Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -83,12 +84,15 @@ public class TodoItemController(
       return BadRequest(ModelState);
     }
 
-    var result = await _todoItemService.UpdateAsync(id, dto);
-    if (!result)
+    UpdateResult result = await _todoItemService.UpdateAsync(id, dto);
+    
+    return result switch
     {
-      return BadRequest();
-    }
-    return Ok();
+      UpdateResult.Success => NoContent(),
+      UpdateResult.NotFound => NotFound(),
+      UpdateResult.BadRequest => BadRequest("Id mismatch."),
+      _ => StatusCode(500, "An unexpected error occurred.")
+    };
   }
 
   [HttpPut("{id:int}/percent-complete")]
