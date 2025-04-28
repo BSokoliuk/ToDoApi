@@ -6,14 +6,14 @@ namespace Infrastructure.DbContexts;
 
 public class TodoItemDbContext(DbContextOptions<TodoItemDbContext> options) : DbContext(options)
 {
-  public DbSet<TodoItem> TodoItems { get; set; }
+    public DbSet<TodoItem> TodoItems { get; set; }
 
-  protected override void OnModelCreating(ModelBuilder modelBuilder)
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
         // Seed
-         modelBuilder.Entity<TodoItem>().HasData(new TodoItem
+        modelBuilder.Entity<TodoItem>().HasData(new TodoItem
         {
             Id = 1,
             Title = "Sample Todo Item",
