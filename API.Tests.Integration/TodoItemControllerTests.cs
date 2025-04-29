@@ -220,7 +220,7 @@ public class TodoItemControllerTests : IClassFixture<TestProgram>
     }
 
     [Fact]
-    public async Task PutWhenItemDoesNotExist_ReturnsNotFound_()
+    public async Task Put_WhenItemDoesNotExist_ReturnsNotFound_()
     {
         // Arrange
         var updatedTodoItem = new TodoItemDto
