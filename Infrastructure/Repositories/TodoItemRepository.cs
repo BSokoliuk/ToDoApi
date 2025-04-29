@@ -16,12 +16,15 @@ public class TodoItemRepository(TodoItemDbContext context) : ITodoItemRepository
 
   public async Task<IEnumerable<TodoItem>> GetAllAsync()
   {
-    return await _context.TodoItems.ToListAsync();
+    return await _context.TodoItems
+      .AsNoTracking()
+      .ToListAsync();
   }
 
   public async Task<IEnumerable<TodoItem>> GetIncomingItemsAsync(DateTime dateTime)
   {
     return await _context.TodoItems
+      .AsNoTracking()
       .Where(ti => ti.ExpiryDateTime > DateTime.UtcNow && ti.ExpiryDateTime < dateTime)
       .ToListAsync();
   }
@@ -29,6 +32,7 @@ public class TodoItemRepository(TodoItemDbContext context) : ITodoItemRepository
   public async Task<IEnumerable<TodoItem>> GetIncomingItemsAsync(DateTime startDateTime, DateTime endDateTime)
   {
     return await _context.TodoItems
+      .AsNoTracking()
       .Where(ti => ti.ExpiryDateTime > startDateTime && ti.ExpiryDateTime < endDateTime)
       .ToListAsync();
   }
